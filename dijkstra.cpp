@@ -4,13 +4,17 @@
 #include <vector>
 #include <queue>
 
-template<typename T> std::vector<T> dijkstra(std::vector<std::vector<std::pair<int, T>>> &g, int source, T infinity) {
-    std::vector<T> distance(g.size(), infinity);
-    std::vector<bool> visited(g.size(), false);
+// the graph should be passed as an adjacency list
+// the datatype used for describing a neighbor node is a pair, where
+// the first object contains the index of the neighbor node and the second
+// object the weight of the incident edge
+template<typename T> std::vector<T> dijkstra(std::vector<std::vector<std::pair<int, T>>> &graph, int source, T infinity) {
+    std::vector<T> distance(graph.size(), infinity);
+    std::vector<bool> visited(graph.size(), false);
     distance[source] = 0;
     std::priority_queue<std::pair<T, int>> prio_queue;
 
-    for (int i=0;i<(int)g.size();i++) {
+    for (int i=0;i<(int)graph.size();i++) {
         prio_queue.push(std::make_pair(-distance[i], i));
     }
 
@@ -21,7 +25,7 @@ template<typename T> std::vector<T> dijkstra(std::vector<std::vector<std::pair<i
         if (visited[node]) continue;
         visited[node] = true;
 
-        for (auto [neighbor, weight] : g[node]) {
+        for (auto [neighbor, weight] : graph[node]) {
             if (distance[neighbor] > distance[node] + weight) {
                 distance[neighbor] = distance[node] + weight;
                 prio_queue.push(std::make_pair(-distance[neighbor], neighbor));
@@ -33,13 +37,13 @@ template<typename T> std::vector<T> dijkstra(std::vector<std::vector<std::pair<i
 }
 
 // this function just returns the distance between the source and a target
-template<typename T> T dijkstra(std::vector<std::vector<std::pair<int, T>>> &g, int source, int target, T infinity) {
-    std::vector<T> distance(g.size(), infinity);
-    std::vector<bool> visited(g.size(), false);
+template<typename T> T dijkstra(std::vector<std::vector<std::pair<int, T>>> &graph, int source, int target, T infinity) {
+    std::vector<T> distance(graph.size(), infinity);
+    std::vector<bool> visited(graph.size(), false);
     distance[source] = 0;
     std::priority_queue<std::pair<T, int>> prio_queue;
 
-    for (int i=0;i<(int)g.size();i++) {
+    for (int i=0;i<(int)graph.size();i++) {
         prio_queue.push(std::make_pair(-distance[i], i));
     }
 
@@ -52,7 +56,7 @@ template<typename T> T dijkstra(std::vector<std::vector<std::pair<int, T>>> &g, 
         if (visited[node]) continue;
         visited[node] = true;
 
-        for (auto [neighbor, weight] : g[node]) {
+        for (auto [neighbor, weight] : graph[node]) {
             if (distance[neighbor] > distance[node] + weight) {
                 distance[neighbor] = distance[node] + weight;
                 prio_queue.push(std::make_pair(-distance[neighbor], neighbor));
@@ -62,3 +66,4 @@ template<typename T> T dijkstra(std::vector<std::vector<std::pair<int, T>>> &g, 
 
     return distance[target];
 }
+
