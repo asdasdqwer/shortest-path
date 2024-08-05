@@ -5,6 +5,7 @@
 #include <vector>
 #include <queue>
 
+
 template<typename T, typename Func>
 T astar(std::vector<std::vector<std::pair<int, T>>> &graph, int source, int target, T infinity, Func&& potential) {
     std::vector<T> distance(graph.size(), infinity);
@@ -28,7 +29,7 @@ T astar(std::vector<std::vector<std::pair<int, T>>> &graph, int source, int targ
         for (auto [neighbor, weight] : graph[node]) {
             if (distance[neighbor] > distance[node] + weight) {
                 distance[neighbor] = distance[node] + weight;
-                prio_queue.push(std::make_pair(-distance[neighbor]-potential(target, i), neighbor));
+                prio_queue.push(std::make_pair(-distance[neighbor]-potential(target, neighbor), neighbor));
             }
         }
     }
